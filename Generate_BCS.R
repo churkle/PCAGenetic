@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 generate_BCS <- function(file, colStart = 1, colEnd = max(count.fields(file, skip = colStart)))
 {
   
@@ -34,4 +35,9 @@ generate_BCS <- function(file, colStart = 1, colEnd = max(count.fields(file, ski
     }
   }
   bcsData
+=======
+generate_BCS <- function()
+{
+  
+>>>>>>> origin/master
 }
