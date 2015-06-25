@@ -7,32 +7,42 @@ generate_BCS <- function(file, colStart = 1, colEnd = max(count.fields(file, ski
   for(i in 1:ncol(mydata))
   {
     bcsData[i, "Strain"] <- colnames(mydata)[i]
+    bcsData[i, !names(bcsData) %in% "Strain"] <- 0
     baseCount <- new.env(hash = TRUE)
     total <- 0
     
-    for(j in 1:ncol(mydata))
+    for(j in 1:nrow(mydata))
     {
+      letters <- strsplit(as.character(mydata[ j,i ]), split = "")
       
-      if(exists(as.character(mydata[ i,j ]), where = baseCount))
+      for(g in i:length(letters))
       {
-        baseCount[[ as.character(mydata[ i,j ]) ]] <- 
-          baseCount[[ as.character(mydata[ i,j ]) ]] + 1
+          if(exists(letters[g], where = baseCount))
+          {
+            baseCount[[ as.character(letters[g]) ]] <- 
+              baseCount[[ as.character(letters[g]) ]] + 1
+          }
+          else
+          {
+            if(!(letters[g]) %in% colnames(bcsData))
+            {
+              bcsData[[ letters[g] ]] <- 0
+            }
+            baseCount[[ letters[g] ]] <- 1
+          }
+          total <- total + 1
       }
-      else
-      {
-        if(!(as.character(mydata[ i,j ]) %in% colnames(bcsData)))
-        {
-          bcsData[[ as.character(mydata[ i,j ]) ]] <- 0
-        }
-        baseCount[[ as.character(mydata[ i,j ]) ]] <- 1
-      }
-      total <- total + 1
+      
     }
     
     for(k in ls(baseCount))
     {
-      bcsData[ i,k ] <- baseCount[[ as.character(k) ]]
+      bcsData[ i,k ] <- baseCount[[ as.character(k) ]] / total
     }
+    
+    bcsData[ i,"Total" ] <- total
+    
   }
+  
   bcsData
 }
