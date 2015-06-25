@@ -2,10 +2,11 @@ generate_BCS <- function(file, colStart = 1, colEnd = max(count.fields(file, ski
 {
   
   mydata <- read.table(file = file, header = TRUE)[, colStart:colEnd]
-  bcsData <- data.frame("Strain" = character())
+  bcsData <- data.frame("Strain" = character(0), stringsAsFactors = FALSE)
   
   for(i in 1:ncol(mydata))
   {
+    bcsData[i, "Strain"] <- colnames(mydata)[i]
     baseCount <- new.env(hash = TRUE)
     total <- 0
     
@@ -21,7 +22,7 @@ generate_BCS <- function(file, colStart = 1, colEnd = max(count.fields(file, ski
       {
         if(!(as.character(mydata[ i,j ]) %in% colnames(bcsData)))
         {
-          bcsData[[ as.character(mydata) ]] <- 0
+          bcsData[[ as.character(mydata[ i,j ]) ]] <- 0
         }
         baseCount[[ as.character(mydata[ i,j ]) ]] <- 1
       }
