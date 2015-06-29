@@ -51,5 +51,5 @@ generate_BCS <- function(file, colStart = 1, colEnd = max(count.fields(file, ski
     
   }
   
-  bcsData
+  capture.output( print(bcsData, print.gap = 1, row.names = FALSE, right = F), file = "output.txt" )
 }
