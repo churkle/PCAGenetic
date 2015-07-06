@@ -20,5 +20,7 @@ perform_PCA <- function(file, colStart = 1, colEnd = max(count.fields(file, skip
     
     bases <- data.matrix(bases)
     bases <- t(bases)
-    prcomp(bases)
+    myPCA <- prcomp(bases)
+    capture.output( print(myPCA$rotation, print.gap = 1, row.names = FALSE, right = F), file = "loading.txt" )
+    capture.output( print(myPCA$x, print.gap = 1, row.names = FALSE, right = F), file = "scores.txt" )
 }
