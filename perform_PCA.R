@@ -1,4 +1,4 @@
-perform_PCA <- function(file, colStart = 1, colEnd = max(count.fields(file, skip = colStart)), alleleCol = "alleles")
+perform_PCA <- function(file, colStart = 1, colEnd = max(count.fields(file, skip = colStart)), alleleCol = "alleles", numPCs = 3)
 {
     mydata <- read.table(file = file, header = TRUE, colClasses = "character")
     bases <- mydata[ colStart:colEnd ]
@@ -21,6 +21,7 @@ perform_PCA <- function(file, colStart = 1, colEnd = max(count.fields(file, skip
     bases <- data.matrix(bases)
     bases <- t(bases)
     myPCA <- prcomp(bases)
-    capture.output( print(myPCA$rotation, print.gap = 1, row.names = FALSE, right = F), file = "loading.txt" )
+    capture.output( print(myPCA$rotation, print.gap = 1, row.names = TRUE, right = F), file = "loading.txt" )
     capture.output( print(myPCA$x, print.gap = 1, row.names = FALSE, right = F), file = "scores.txt" )
+    myPCA
 }
